@@ -54,9 +54,11 @@ package franz {
             initial = new Map<String,String>();
         }
         void update(Map<String, String> update) {
+            print("Subscribing, update:");
             initial.update(update);
         }
         void subscribed() {
+            print("Subscribing, subscribed, initial index:");
             index.rcu.set(initial);
             index.state = new Subscribed(index);
         }
@@ -68,6 +70,7 @@ package franz {
         void update(Map<String, String> update) {
             Map<String, String> next = new Map<String, String>(index.rcu.get());
             next.update(update);
+            print("Subscribed, update:");
             index.rcu.set(next);
         }
         void subscribed() { /* should not happen */ }
@@ -98,8 +101,20 @@ package franz {
             self.reader.next_async(self);
         }
         void callback(String result) {
-            String key = "TODO";
-            String value = result;
+            print("Got next_async " + result);
+            List<String> parts = result.split(":");
+            String key = parts[0];
+            String value = "";
+            if ( parts.size() > 1) {
+                value = parts[1];
+                int i = 2;
+                while (i < parts.size()) {
+                    key = key + ":" + value;
+                    value = parts[i];
+                    i = i + 1;
+                }
+            }
+            print("Index update: key='" + key + "'  value='" + value + "'");
             Map<String,String> update = new Map<String,String>();
             update[key] = value;
             self.sub.update(update);
