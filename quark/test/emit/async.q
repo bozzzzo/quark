@@ -11,11 +11,11 @@ class Later extends Async<String> {
 class Requestbin extends Async<String> {
     int done;
     Requestbin() {
-        self.done = 0;
+        self.done = 42;
     }
     void callback(String result) {
-        done = done + 1;
-        print("requestbin: " + result);
+        done = done + 13;
+        print("requestbin: " + result + " done=" + done.toString());
     }
     void errback(String failure) {
         done = done + 1;
@@ -28,5 +28,6 @@ void main() {
     l.callback("expected");
     l.errback("expected");
     Requestbin r = new Requestbin();
-    url_get_async("http://127.0.0.1:9999", r);
+    url_get_async("http://127.0.0.1:9998/yay!", r);
+    url_get_async("http://127.0.0.1:9999/yay!", r);
 }

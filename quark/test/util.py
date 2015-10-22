@@ -13,6 +13,10 @@
 # limitations under the License.
 
 import os, pytest
+import wsgiref.simple_server
+import threading
+
+__all__ = "check_file assert_file maybe_xfail hello_server".split()
 
 def check_file(path, content):
     try:
@@ -35,3 +39,30 @@ def assert_file(path, content):
 def maybe_xfail(code):
     if "xfail" in code:
         pytest.xfail()
+
+class hello_server(object):
+    def __init__(self):
+        self.server = wsgiref.simple_server.make_server("127.0.0.1", 9999, self)
+
+    def start(self):
+        def run():
+            self.server.serve_forever()
+        self.thread = threading.Thread(target=run)
+        self.thread.start()
+
+    def stop(self):
+        self.server.shutdown()
+        self.thread.join()
+
+    def __call__(self, env, start_response):
+        status = '200 OK'
+        response_body = env.get('PATH_INFO', 'hello server!').lstrip('/')
+        response_headers = [
+            ('Content-Type', 'text/html'),
+            ('Content-Length', str(len(response_body)))
+        ]
+        start_response(status, response_headers)
+        return [response_body]
+
+
+

@@ -15,12 +15,21 @@
 import os, pytest, subprocess
 from quark.backend import Java, Python, JavaScript
 from quark.compiler import Compiler, CompileError
-from .util import check_file, maybe_xfail
+from .util import check_file, maybe_xfail, hello_server
 
 directory = os.path.join(os.path.dirname(__file__), "emit")
 
 files = [name for name in os.listdir(directory) if name.endswith(".q")]
 paths = [os.path.join(directory, name) for name in files]
+
+@pytest.fixture(scope="session")
+def hello(request):
+    h = hello_server()
+    h.start()
+    def fin():
+        h.stop()
+    request.addfinalizer(fin)
+    return h
 
 class Walker(object):
 
@@ -45,7 +54,7 @@ def path(request):
 def Backend(request):
     return request.param
 
-def test_emit(path, Backend):
+def test_emit(path, Backend, hello):
     text = open(path).read()
     maybe_xfail(text)
     base = os.path.splitext(path)[0]

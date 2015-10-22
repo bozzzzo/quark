@@ -4,7 +4,8 @@ public class Functions {
         (l).callback("expected");
         (l).errback("expected");
         Requestbin r = new Requestbin();
-        io.datawire.quark_runtime.url_get_async(("http://127.0.0.1:9999"), (r));
+        io.datawire.quark_runtime.url_get_async(("http://127.0.0.1:9998/yay!"), (r));
+        io.datawire.quark_runtime.url_get_async(("http://127.0.0.1:9999/yay!"), (r));
     }
     public static void main(String[] args) {
         main();

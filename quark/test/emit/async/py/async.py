@@ -18,11 +18,11 @@ class Requestbin(_Async):
 
     def __init__(self):
         super(Requestbin, self).__init__()
-        (self).done = 0
+        (self).done = 42
 
     def callback(self, result):
-        self.done = (self.done) + (1)
-        _println(("requestbin: ") + (result));
+        self.done = (self.done) + (13)
+        _println(((("requestbin: ") + (result)) + (" done=")) + (str(self.done)));
 
     def errback(self, failure):
         self.done = (self.done) + (1)
@@ -35,7 +35,8 @@ def main():
     (l).callback("expected");
     (l).errback("expected");
     r = Requestbin();
-    _url_get_async(("http://127.0.0.1:9999"),(r));
+    _url_get_async(("http://127.0.0.1:9998/yay!"),(r));
+    _url_get_async(("http://127.0.0.1:9999/yay!"),(r));
 
 
 if __name__ == "__main__":

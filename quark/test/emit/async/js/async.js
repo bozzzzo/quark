@@ -26,7 +26,7 @@ Later.prototype.errback = Later_errback;
 
 function Requestbin() {
     Requestbin.super_.call(this);
-    (this).done = 0;
+    (this).done = 42;
 }
 exports.Requestbin = Requestbin;
 _qrt.util.inherits(Requestbin, _qrt.Async);
@@ -38,8 +38,8 @@ function Requestbin__init_fields__() {
 Requestbin.prototype.__init_fields__ = Requestbin__init_fields__;
 
 function Requestbin_callback(result) {
-    this.done = (this.done) + (1);
-    _qrt.print(("requestbin: ") + (result));
+    this.done = (this.done) + (13);
+    _qrt.print(((("requestbin: ") + (result)) + (" done=")) + (_qrt.toString(this.done)));
 }
 Requestbin.prototype.callback = Requestbin_callback;
 
@@ -54,7 +54,8 @@ function main() {
     (l).callback("expected");
     (l).errback("expected");
     var r = new Requestbin();
-    _qrt.url_get_async(("http://127.0.0.1:9999"),(r));
+    _qrt.url_get_async(("http://127.0.0.1:9998/yay!"),(r));
+    _qrt.url_get_async(("http://127.0.0.1:9999/yay!"),(r));
 }
 exports.main = main;
 
