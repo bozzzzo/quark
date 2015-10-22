@@ -42,15 +42,22 @@ def maybe_xfail(code):
 
 class hello_server(object):
     def __init__(self):
-        self.server = wsgiref.simple_server.make_server("127.0.0.1", 9999, self)
+        try:
+            self.server = wsgiref.simple_server.make_server("127.0.0.1", 9999, self)
+        except:
+            self.server = None
 
     def start(self):
+        if self.server is None:
+            return
         def run():
             self.server.serve_forever()
         self.thread = threading.Thread(target=run)
         self.thread.start()
 
     def stop(self):
+        if self.server is None:
+            return
         self.server.shutdown()
         self.thread.join()
 
