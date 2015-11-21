@@ -52,4 +52,10 @@ Installation
 
 To install Quark, run the following command:
 
-``pip install datawire-quark``
+``pip install --user datawire-quark``
+
+make sure you have `~/.local/bin` in your PATH:
+
+``type -P quark && echo quark found, OK || (echo "You need to update your PATH in your shell startup script" && echo 'PATH="$PATH":~/.local/bin')``
+
+you may also consider installing quark inside a virtualenv.
