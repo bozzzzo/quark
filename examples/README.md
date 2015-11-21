@@ -27,7 +27,9 @@ Compile the quark interface into a package. Install the quark twisted
 integration and the generated package:
 
     quark --python package slack.q
-    pip install datawire-quark-twisted slack/py/dist/slack-0.1.0-py2-none-any.whl
+    pip install --user datawire-quark-twisted slack/py/dist/slack-0.1.0-py2-none-any.whl
+
+Note: if you are testing quark inside a virtualenv you should drop the `--user` flag for `pip install`
 
 Run the bot
 
