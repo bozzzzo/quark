@@ -35,7 +35,7 @@ Run the bot
 
     slack-bot && python bot.py
 
-**Note**: in case running hte bot produces a `UserWarning: You do not have a working installation of the service_identity module: 'No module named pyasn1.codec.der.decoder'` you can usually fix that with a `pip uninstall service_identity && pip install --user service_identity`
+**Note**: in case running the bot produces a `UserWarning: You do not have a working installation of the service_identity module: 'No module named pyasn1.codec.der.decoder'` you can usually fix that with a `pip uninstall service_identity && pip install --user service_identity`
 
 ### JavaScript
 
