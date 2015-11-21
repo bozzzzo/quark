@@ -21,7 +21,7 @@ Store that token in a file
 
 ### Python
 
-**Note**: This will require twisted. If you are running this on Ubuntu ensure that you have the 'python-dev' and 'build-essential' packages installed. ``sudo apt-get install python-dev build-essential``
+**Note**: [This will require twisted.](http://datawire.github.io/quark/install/install.html#python-requirements>)
 
 Compile the quark interface into a package. Install the quark twisted
 integration and the generated package:
@@ -35,11 +35,12 @@ Run the bot
 
     slack-bot && python bot.py
 
+TODO: move this to troubleshooting in the docs and somehow link from here.
 **Note**: in case running the bot produces a `UserWarning: You do not have a working installation of the service_identity module: 'No module named pyasn1.codec.der.decoder'` you can usually fix that with a `pip uninstall service_identity && pip install --user service_identity`
 
 ### JavaScript
 
-**Note**: This will require node 4.2.2 or later.
+**Note**: [This will require node 4.2.2 or later.](http://datawire.github.io/quark/install/install.html#javascript-requirements>)
 
 Compile the quark interface into a package. Install that package.
 
