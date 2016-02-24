@@ -90,6 +90,11 @@ class QuarkCompile(object):
         return self.tmpdir / self.outdir / "java" / "target" / (
             "interop-%s.jar" % self.version)
 
+    @property
+    def rb_package(self):
+        self.compile()
+        return self.tmpdir / self.outdir / "rb" / "foo.gemspec"
+    
     def __repr__(self):
         return "%scompiled %s in %s" % (
             (self.compiled and "Already " or "Un-"),
@@ -201,6 +206,56 @@ class Integration(object):
 
     def invoke_client(self, port):
         pytest.fail("Need to implement invoke_client")
+
+class Ruby(Integration):
+    _runtime_built = []
+    def __init__(self, **kwargs):
+        super(Ruby, self).__init__(**kwargs)
+
+    def build(self):
+        self.gem_lib.ensure(dir=1)
+        if not self._runtime_built:
+            self.gem_build(self.rb_core_package)
+            self._runtime_built.append(True)
+        self.gem_install(self.rb_core_package)
+        self.gem_build(self.compile.rb_package)
+        self.gem_install(self.compile.rb_package)
+        self.rundir.join("run-client.rb").write(textwrap.dedent("""\
+        puts "FAIL"
+        """))
+        self.rundir.join("run-server.rb").write(textwrap.dedent("""\
+        puts "FAIL"
+        """))
+
+    @property
+    def gem_lib(self):
+        return self.rundir / "test-gem-lib"
+
+    def gem_build(self, gemspec):
+        command(*self.gem_command("build", gemspec.basename), cwd=gemspec.dirpath())
+
+    def gem_install(self, gemspec):
+        command(*self.gem_command("install", "-i", self.gem_lib.strpath,
+                                  self.gem_from_spec(gemspec)), cwd=gemspec.dirpath())
+
+    def gem_command(self, *args):
+        return ["gem"] + list(args)
+
+    def gem_from_spec(self, gemspec):
+        return subprocess.check_output([
+            "ruby", "-rrubygems", "-e",
+            'spec = Gem::Specification::load(ARGV[0]); puts "%s-%s.gem" % [spec.name, spec.version]',
+            gemspec.strpath]).strip()
+
+    def ruby(self, script):
+        command(*self.ruby_command(script.strpath), cwd=self.rundir)
+    
+    def ruby_command(self, *args):
+        return ["ruby", "-I", self.gem_lib.strpath] + list(args)
+
+    @property
+    def rb_core_package(self):
+        return self.runtimes / "ruby-core" / "datawire-quark-core.gemspec"
 
 class Node(Integration):
     def __init__(self, **kwargs):
