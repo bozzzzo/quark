@@ -45,6 +45,8 @@ Target language options:
   --python-out DIR      Subdirectory for Python code [default: py].
   --javascript          Emit JavaScript code.
   --javascript-out DIR  Subdirectory for JavaScript code [default: js].
+  --ruby                Emit Ruby code.
+  --ruby-out DIR        Subdirectory for JavaScript code [default: rb].
 """
 
 from glob import glob
@@ -103,8 +105,8 @@ def main(args):
     java = args["--java"]
     python = args["--python"]
     javascript = args["--javascript"]
-    ruby = False
-    if args["--all"] or not (java or python or javascript):
+    ruby = args["--ruby"]
+    if args["--all"] or not (java or python or javascript or ruby):
         java = python = javascript = ruby = True
 
     filenames = args["<file>"]
@@ -126,7 +128,7 @@ def main(args):
         java_dir = os.path.join(output, args["--java-out"])
         py_dir = os.path.join(output, args["--python-out"])
         js_dir = os.path.join(output, args["--javascript-out"])
-        rb_dir = os.path.join(output, "rb")
+        rb_dir = os.path.join(output, args["--ruby-out"])
 
     assert "compile" in commands, (commands, args)
 
