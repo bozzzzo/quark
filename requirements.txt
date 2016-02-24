@@ -1,0 +1,5 @@
+# requirements for developing and/or testing quark and the runtime integrations
+-e .
+ws4py==0.3.4
+pytest
+pexpect
