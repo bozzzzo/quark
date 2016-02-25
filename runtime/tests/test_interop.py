@@ -227,6 +227,12 @@ class Ruby(Integration):
         puts "FAIL"
         """))
 
+    def invoke_client(self, port):
+        return self.ruby_command("run-client.rb", str(port))
+
+    def invoke_server(self, port):
+        return self.ruby_command("run-server.rb", str(port))
+
     @property
     def gem_lib(self):
         return self.rundir / "test-gem-lib"
@@ -249,7 +255,7 @@ class Ruby(Integration):
 
     def ruby(self, script):
         command(*self.ruby_command(script.strpath), cwd=self.rundir)
-    
+
     def ruby_command(self, *args):
         return ["ruby", "-I", self.gem_lib.strpath] + list(args)
 
