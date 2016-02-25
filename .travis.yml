@@ -1,0 +1,51 @@
+os:
+- linux
+sudo: required
+dist: trusty
+env:
+- TEST_SUITE=quarkc
+- TEST_SUITE=runtime
+language:
+- java
+- python
+python:
+- 2.7.6
+jdk:
+- oraclejdk8
+addons:
+  apt:
+    packages:
+    - libssl-dev
+    - swig
+    - python-dev
+    - curl
+    - python2.7
+    - python-pip
+    - tar
+    - gcc
+    - make
+    - python-dev
+    - libffi-dev
+    - python-virtualenv
+install:
+- java -version 2>&1 | grep -Fe 'java version "1.8.0'
+- python -c 'import sys; print sys.version; sys.exit(int(sys.version_info[:3] < (2,7,6)))'
+- rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm
+  && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm
+  install 4.2.2
+- nvm alias default 4.2.2
+- node --version
+- virtualenv quark-travis
+- . quark-travis/bin/activate
+- pip install --upgrade pip
+- scripts/develop.sh
+- pip freeze
+- mvn --version
+script:
+- py.test -v $TEST_SUITE --durations=10
+notifications:
+  slack:
+    rooms:
+      secure: kK5qUpRLVg90qPYaW3rumkhz8uDeHhMmurWb5mwFQMoxP8oROTlazyXpSatBvdVBGB2PVF/zc3FWMK7EQ62Qs4JcfXhukxhnQYmAsSENJVdnQJQXAtJZamtobmE9D7F/rbCXaxpY1sXGoMXRcYlwyU2bo0CneDve0Kh0cFlr700oBUvcSx/xhF/+6Prb0BLvqiq5kpLsZSsWkI4UAuxhDCRWOLmgATNcsPKdBfROmWO4GJ2yHx1USdIlm9ibaDS+I2gv2zJIpOttCAEYNbL/oYDHx7gZdmaIBui/Fq44RDGjcnrB0zdCasGUZs9VM+6AfjXmbUvCrkU3G5+htSreS6wyMtwSr/K/+DPvbzq4di1HullcxgP+jC7UTXHLjuejh9oxxIp7azDq9P/QjMKqZ4VyiF3MUKwGhok4DqMi35HQoXtqWoWf5BgvIa8EylUFBXSPKWEw5MhtPyzq8wD1/HfvJQzmZqovSab9HsNQr8ATzlXbg3DjlInEbeFgd0bjgQW+B/8/LvLUuBXVAqv5IgHSx/fMGl6Ol9cIwQUjyLBrvgtPMpqQtHIIw1qS88q+iR/AP0XhS44eUORkw8Bm0FVlD7qR4qDQFAreO143kbDJ3f+chriSp/LcgyxxmShLIZcpg1yli2zOFIY4ZF0qoVpOOzNc6d28X2+6P6L+SM8=
+    on_success: change
+    on_failure: change
