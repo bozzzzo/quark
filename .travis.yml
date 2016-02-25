@@ -41,6 +41,12 @@ install:
 - scripts/develop.sh
 - pip freeze
 - mvn --version
+- mvn install
+- npm install runtime/js-core
+- npm install runtime/js-node
+- pip install runtime/python-core
+- pip install runtime/python-threaded
+- quark/test/emit/update-deps.sh
 script:
 - py.test -v $TEST_SUITE --durations=10
 notifications:
