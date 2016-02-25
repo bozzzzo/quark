@@ -33,13 +33,13 @@ end
 Gem::Specification.new do |spec|
   spec.name        = '{name}'
   spec.version     = '{version}'
-  spec.add_runtime_dependency 'datawire-quark-core', '== {runtime_version}'
-  # spec.summary     = ''
+  spec.add_runtime_dependency 'datawire-quark-core' # , '== {runtime_version}'
+  spec.summary     = 'Quark generated {name}'
   # spec.description = ''
-  # spec.author      = ''
+  spec.author      = 'quark'
   # spec.email       = ''
   # spec.license     = ''
-  # spec.files       = ['']
+  spec.files       = ['{name}.rb']
   # spec.homepage    = ''
 end
 """.format
@@ -60,13 +60,13 @@ def package(name, version, packages, srcs):
     files = OrderedDict()
     files.update(srcs)
     for path, readme in packages.items():
-        files['%s/README.md' % '/'.join(path)] = readme
+        files['README.md'] = readme
         gemspec = Templates.gemspec(
             name=name,
             version=version,
-            runtime_version='TODO',
+            runtime_version='1.2.3',
         )
-        files['%s/%s.gemspec' % ('/'.join(path), name)] = gemspec
+        files['%s.gemspec' % (name, )] = gemspec
     return files
 
 def class_file(path, name, fname):
