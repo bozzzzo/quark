@@ -93,7 +93,7 @@ class QuarkCompile(object):
     @property
     def rb_package(self):
         self.compile()
-        return self.tmpdir / self.outdir / "rb" / "foo.gemspec"
+        return self.tmpdir / self.outdir / "rb" / "interop.gemspec"
     
     def __repr__(self):
         return "%scompiled %s in %s" % (
