@@ -3,8 +3,8 @@ os:
 sudo: required
 dist: trusty
 env:
-- TEST_SUITE=quarkc
-- TEST_SUITE=runtime
+- TEST_SUITE=quark
+- TEST_SUITE=runtime -k'Node and Ruby'
 language:
 - java
 - python
