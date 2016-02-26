@@ -1,0 +1,17 @@
+PATH
+  remote: runtime/ruby-core
+  specs:
+    datawire-quark-core (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  datawire-quark-core!
+
+BUNDLED WITH
+   1.11.2

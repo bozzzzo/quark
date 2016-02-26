@@ -134,7 +134,7 @@ def build_rb(comp, base, srcs):
             expected = open(out).read()
         except IOError:
             expected = None
-        actual = subprocess.check_output(["ruby", script], cwd=base)
+        actual = subprocess.check_output(["bundle", "exec", "ruby", script], cwd=base)
         if expected != actual:
             open(out + ".cmp", "write").write(actual)
         assert expected == actual
